@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1080" viewBox="0 0 1600 1080" role="img" aria-labelledby="title desc">
+<title id="title">ShopLedger application architecture</title>
+<desc id="desc">Architecture diagram of ShopLedger showing its browser UI, four Express routers, library modules, config, JSON data store, and the order placement flow.</desc>
+<defs>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#64748b"/></marker>
+  <marker id="hotarrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#e05252"/></marker>
+  <style>
+    text{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#172033}.title{font-size:31px;font-weight:750}.sub{font-size:14px;fill:#5d6b82}.section{font-size:15px;font-weight:700;letter-spacing:1.2px;fill:#5d6b82}.box{fill:#fff;stroke:#cbd5e1;stroke-width:1.5;rx:13}.ui{fill:#e8f2ff;stroke:#7da9df}.router{fill:#f1edff;stroke:#a896df}.lib{fill:#f5f8fb;stroke:#c6d0dc}.persist{fill:#e9f8f1;stroke:#77be9e}.cfg{fill:#fff5e5;stroke:#e3b96f}.head{font-size:17px;font-weight:700}.file{font-size:12px;fill:#607087}.small{font-size:12px;fill:#526176}.line{fill:none;stroke:#8090a3;stroke-width:1.6;marker-end:url(#arrow)}.hot{fill:none;stroke:#e05252;stroke-width:3;marker-end:url(#hotarrow)}.hotdash{fill:none;stroke:#e05252;stroke-width:2.4;stroke-dasharray:7 6;marker-end:url(#hotarrow)}.hotlabel{font-size:12px;font-weight:700;fill:#c63f46}.foot{font-size:12px;fill:#6d7b8f}
+  </style>
+</defs>
+<rect width="1600" height="1080" fill="#f7f9fc"/>
+<text x="54" y="56" class="title">ShopLedger · application architecture</text>
+<text x="55" y="82" class="sub">Express app · browser POS · local JSON persistence</text>
+
+<text x="54" y="125" class="section">BROWSER</text>
+<rect x="54" y="143" width="1492" height="100" class="box ui"/>
+<text x="82" y="179" class="head">ShopLedger UI</text><text x="82" y="204" class="file">public/index.html · public/js/app.js · public/css/style.css</text>
+<text x="405" y="178" class="small">POS · order history · Khata · inventory / GST audit</text>
+<text x="405" y="204" class="small">Preview: POST /api/pricing/preview   ·   Submit: POST /api/orders</text>
+
+<text x="54" y="286" class="section">EXPRESS ROUTERS · MOUNTED AT /api</text>
+<rect x="54" y="305" width="356" height="102" class="box router"/><text x="78" y="341" class="head">products.js</text><text x="78" y="368" class="file">routes/products.js</text><text x="78" y="390" class="small">Products · active coupons</text>
+<rect x="432" y="305" width="356" height="102" class="box router"/><text x="456" y="341" class="head">orders.js</text><text x="456" y="368" class="file">routes/orders.js</text><text x="456" y="390" class="small">List / get · create · cancel</text>
+<rect x="810" y="305" width="356" height="102" class="box router"/><text x="834" y="341" class="head">customers.js</text><text x="834" y="368" class="file">routes/customers.js</text><text x="834" y="390" class="small">Customer balances · settlements</text>
+<rect x="1188" y="305" width="356" height="102" class="box router"/><text x="1212" y="341" class="head">reports.js</text><text x="1212" y="368" class="file">routes/reports.js</text><text x="1212" y="390" class="small">Dashboard · GST · pricing preview · export</text>
+
+<text x="54" y="454" class="section">LIBRARY MODULES · lib/</text>
+<!-- Order route flow across libraries -->
+<rect x="54" y="477" width="235" height="94" class="box lib"/><text x="76" y="512" class="head">inventory.js</text><text x="76" y="538" class="small">Find · check · reserve</text><text x="76" y="557" class="file">stock availability and deduction</text>
+<rect x="309" y="477" width="235" height="94" class="box lib"/><text x="331" y="512" class="head">pricing.js</text><text x="331" y="538" class="small">Subtotal · discount · GST · total</text><text x="331" y="557" class="file">line breakdowns and rounding</text>
+<rect x="564" y="477" width="235" height="94" class="box lib"/><text x="586" y="512" class="head">coupons.js</text><text x="586" y="538" class="small">Normalize · validate · calculate</text><text x="586" y="557" class="file">config-backed coupon rules</text>
+<rect x="819" y="477" width="235" height="94" class="box lib"/><text x="841" y="512" class="head">tax.js</text><text x="841" y="538" class="small">HSN rate · CGST / SGST split</text><text x="841" y="557" class="file">config-backed GST slabs</text>
+<rect x="1074" y="477" width="235" height="94" class="box lib"/><text x="1096" y="512" class="head">ledger.js</text><text x="1096" y="538" class="small">Khata charge / reversal</text><text x="1096" y="557" class="file">customer account balances</text>
+<rect x="1329" y="477" width="217" height="94" class="box lib"/><text x="1351" y="512" class="head">orders.js</text><text x="1351" y="538" class="small">Add · get · list · cancel</text><text x="1351" y="557" class="file">order records and status</text>
+
+<rect x="180" y="625" width="260" height="94" class="box lib"/><text x="204" y="660" class="head">store.js</text><text x="204" y="686" class="small">Read / write JSON · audit log</text><text x="204" y="705" class="file">synchronous filesystem access</text>
+<rect x="510" y="625" width="260" height="94" class="box lib"/><text x="534" y="660" class="head">reports.js</text><text x="534" y="686" class="small">Dashboard · GST reconciliation</text><text x="534" y="705" class="file">inventory / ledger summaries</text>
+<rect x="840" y="625" width="260" height="94" class="box lib"/><text x="864" y="660" class="head">invoice.js</text><text x="864" y="686" class="small">Invoice figures · HTML rendering</text><text x="864" y="705" class="file">used by invoice page and reports</text>
+<rect x="1170" y="625" width="260" height="94" class="box lib"/><text x="1194" y="660" class="head">dates.js</text><text x="1194" y="686" class="small">Today · date key · fiscal year</text><text x="1194" y="705" class="file">DD/MM/YYYY helpers</text>
+
+<text x="54" y="780" class="section">CONFIGURATION &amp; PERSISTENCE</text>
+<rect x="54" y="803" width="560" height="94" class="box cfg"/><text x="80" y="840" class="head">config.js</text><text x="80" y="867" class="small">Port · shop identity · GST slabs · inventory defaults · coupons · admin key</text>
+<rect x="986" y="803" width="560" height="94" class="box persist"/><text x="1012" y="840" class="head">data/db.json</text><text x="1012" y="867" class="small">Products · orders · customers · settlements · audit log · next IDs</text>
+
+<!-- Main request and order flow -->
+<path d="M300 243 L300 269 L610 269 L610 305" class="line"/>
+<path d="M750 243 L750 273 L1360 273 L1360 305" class="line"/>
+<path d="M1210 243 L1210 273 L988 273 L988 305" class="line"/>
+<path d="M610 407 L610 477" class="hot"/><text x="622" y="444" class="hotlabel">1 · POST /api/orders</text>
+<path d="M544 524 L564 524" class="hot"/><text x="545" y="510" class="hotlabel">2 · subtotal</text>
+<path d="M799 524 L819 524" class="hot"/><text x="796" y="510" class="hotlabel">3 · HSN GST</text>
+<path d="M1054 524 L1074 524" class="hot"/><text x="1052" y="510" class="hotlabel">4 · Khata, if selected</text>
+<path d="M1310 524 L1329 524" class="hot"/><text x="1305" y="510" class="hotlabel">5 · create order</text>
+<path d="M1438 407 L1438 450 L170 450 L170 477" class="hotdash"/><text x="870" y="445" class="hotlabel">Stock checked before pricing; reserved after payment checks</text>
+<path d="M1438 571 L1438 603 L640 603 L640 625" class="line"/><text x="1098" y="597" class="small">reports</text>
+<path d="M640 719 L640 803 L510 803 L510 803" class="line"/>
+<path d="M310 719 L310 803 L1265 803" class="line"/>
+<path d="M130 897 L130 944 L1265 944 L1265 897" class="line"/><text x="627" y="938" class="small">store.js reads and writes</text>
+<path d="M954 243 L954 755 L970 755 L970 625" class="line"/><text x="965" y="749" class="small">GET /orders/:id/invoice</text>
+<path d="M442 672 L510 672" class="line"/><path d="M770 672 L840 672" class="line"/>
+<path d="M1180 407 L1180 603 L970 603 L970 625" class="line"/>
+<text x="54" y="1010" class="foot">Solid gray: app relationships · Red: order placement sequence · Dashed red: stock check / deduction</text>
+</svg>
